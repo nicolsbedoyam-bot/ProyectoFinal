@@ -1,0 +1,7 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+public enum MedioPago {
+    EFECTIVO,
+    TARJETA,
+    TRANSFERENCIA;
+}
