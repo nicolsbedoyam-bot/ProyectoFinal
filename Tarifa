@@ -1,0 +1,20 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import java.time.LocalDate;
+
+public class Tarifa {
+    private int valorPersonaNoche;
+
+    public Tarifa(int valorPersonaNoche ) {
+        this.valorPersonaNoche = valorPersonaNoche;
+    }
+
+    public int getValorPersonaNoche() {
+        return valorPersonaNoche;
+    }
+
+    public void setValorPersonaNoche(int valorPersonaNoche) {
+        this.valorPersonaNoche = valorPersonaNoche;
+    }
+
+}
