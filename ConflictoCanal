@@ -1,0 +1,71 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+public class ConflictoCanal {
+    private String codigoExterno;
+    private String codigoApartamento;
+    private LocalDate fechaEntrada;
+    private LocalDate fechaSalida;
+    private String motivo;
+    private LocalDateTime fechaRegistro;
+
+    public ConflictoCanal(String codigoExterno, String codigoApartamento, LocalDate fechaEntrada, LocalDate fechaSalida, String motivo, LocalDateTime fechaRegistro ) {
+        this.codigoExterno = codigoExterno;
+        this.codigoApartamento = codigoApartamento;
+        this.fechaEntrada = fechaEntrada;
+        this.fechaSalida = fechaSalida;
+        this.motivo = motivo;
+        this.fechaRegistro = fechaRegistro;
+
+    }
+
+    public String getCodigoExterno() {
+        return codigoExterno;
+    }
+
+    public void setCodigoExterno(String codigoExterno) {
+        this.codigoExterno = codigoExterno;
+    }
+
+    public String getCodigoApartamento() {
+        return codigoApartamento;
+    }
+
+    public void setCodigoApartamento(String codigoApartamento) {
+        this.codigoApartamento = codigoApartamento;
+    }
+
+    public LocalDate getFechaEntrada() {
+        return fechaEntrada;
+    }
+
+    public void setFechaEntrada(LocalDate fechaEntrada) {
+        this.fechaEntrada = fechaEntrada;
+    }
+
+    public LocalDate getFechaSalida() {
+        return fechaSalida;
+    }
+
+    public void setFechaSalida(LocalDate fechaSalida) {
+        this.fechaSalida = fechaSalida;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
+
+    public LocalDateTime getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+}
