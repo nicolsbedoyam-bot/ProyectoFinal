@@ -1,0 +1,8 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+public enum TipoCargo {
+    ALOJAMIENTO,
+    SERVICIO_ADICIONAL,
+    PENDALIDAD,
+    AJUSTE;
+}
