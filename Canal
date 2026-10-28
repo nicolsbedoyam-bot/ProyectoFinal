@@ -1,0 +1,7 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+public enum Canal {
+    PORTAL,
+    DIRECTA,
+    EXTERNA;
+}
