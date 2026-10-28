@@ -1,0 +1,10 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+public enum EstadoReserva {
+    PENDIENTE,
+    EN_CURSO,
+    CONFIRMADA,
+    CANCELADA,
+    NO_SHOW,
+    FINALIZADA;
+}
