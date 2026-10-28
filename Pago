@@ -1,0 +1,29 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import java.time.LocalDate;
+
+public class Pago {
+    private int monto;
+    private LocalDate fecha;
+
+    public Pago(int monto, LocalDate fecha ) {
+        this.monto = monto;
+        this.fecha = fecha;
+    }
+
+    public int getMonto() {
+        return monto;
+    }
+
+    public void setMonto(int monto) {
+        this.monto = monto;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+}
