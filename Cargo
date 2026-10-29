@@ -1,27 +1,12 @@
 package co.edu.uniquindio.ProjectoFinal;
 
-public class Cargo {
-    private String concepto;
-    private int monto;
+import java.time.LocalDate;
 
-    public Cargo(String concepto, int monto ) {
-        this.concepto = concepto;
-        this.monto = monto;
+public record Cargo (String concepto, int monto, Folio folio){
+
+    @Override
+    public String toString (){
+        return "Cargo:" + concepto + "-" + monto;
     }
 
-    public String getConcepto() {
-        return concepto;
-    }
-
-    public void setConcepto(String concepto) {
-        this.concepto = concepto;
-    }
-
-    public int getMonto() {
-        return monto;
-    }
-
-    public void setMonto(int monto) {
-        this.monto = monto;
-    }
 }
