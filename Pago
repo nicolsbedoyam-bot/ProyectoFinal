@@ -2,28 +2,11 @@ package co.edu.uniquindio.ProjectoFinal;
 
 import java.time.LocalDate;
 
-public class Pago {
-    private int monto;
-    private LocalDate fecha;
+public record Pago (int monto, LocalDate fecha, Folio folio){
 
-    public Pago(int monto, LocalDate fecha ) {
-        this.monto = monto;
-        this.fecha = fecha;
+    @Override
+    public String toString (){
+        return "Pago:" + monto + "-" + fecha;
     }
 
-    public int getMonto() {
-        return monto;
-    }
-
-    public void setMonto(int monto) {
-        this.monto = monto;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
 }
