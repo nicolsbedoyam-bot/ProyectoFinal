@@ -1,0 +1,49 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import java.time.LocalDate;
+import java.util.LinkedList;
+
+public class Huesped extends Rol{
+
+    private LocalDate fechaNacimiento;
+    private String rutaFotografia;
+
+    public Huesped(String nombre, String cedula, String telefono, String correo, String usuario, String contrasenia, LocalDate fechaNacimiento, String rutaFotografia){
+        super (nombre, cedula, telefono, correo, usuario, contrasenia);
+        this.fechaNacimiento=fechaNacimiento;
+        this.rutaFotografia= rutaFotografia;
+    }
+    @Override
+    public String toString(){
+        return "Huesped:" + nombre + "-" + cedula + "-" + telefono + "-" + correo + "-" + usuario;
+    }
+
+    @Override
+    public LinkedList<String> getPermisos() {
+        LinkedList<String> permisos= new LinkedList<>();
+        permisos.add("Consultar apartamentos disponibles para un rango de fechas y un número de personas");
+        permisos.add("Cotización de una estancia: valor total y desglose noche por noche según la temporada");
+        permisos.add("Creación de reservas : valor total y desglose noche por noche según la temporada");
+        permisos.add("Pago del anticipo y de abonos parciales a su folio");
+        permisos.add("Consulta de reservas, su estado y el saldo de cada folio");
+        permisos.add("Cancelación de una reserva Pendiente o Confirmada, viendo antes cuánto se le devolvería");
+        return permisos;
+    }
+
+
+    public LocalDate getFechaNacimiento () {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getRutaFotografia() {
+        return rutaFotografia;
+    }
+
+    public void setRutaFotografia(String rutaFotografia) {
+        this.rutaFotografia = rutaFotografia;
+    }
+}
