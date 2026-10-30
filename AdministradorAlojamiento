@@ -1,0 +1,29 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import java.time.LocalDate;
+import java.util.LinkedList;
+
+public class AdministradorAlojamiento extends Rol{
+
+    public AdministradorAlojamiento(String nombre, String cedula, String telefono, String correo, String usuario, String contrasenia){
+        super (nombre, cedula, telefono, correo, usuario, contrasenia);
+    }
+    @Override
+    public String toString(){
+        return "AdministradorAlojamiento:" + nombre + "-" + cedula + "-" + telefono + "-" + correo + "-" + usuario;
+    }
+
+    @Override
+    public LinkedList<String> getPermisos() {
+        LinkedList<String> permisos= new LinkedList<>();
+        permisos.add("Gestión de empleados");
+        permisos.add("Creación, modificación o eliminación lógica de apartamentos");
+        permisos.add("Definición de las fechas de cada temporada y de las tarifas por apartamento.");
+        permisos.add("Configuración de la política de cancelación");
+        permisos.add("Registro de bloqueos");
+        permisos.add("Seguridad y autenticación");
+        permisos.add("Consulta de reportes avanzados");
+        return permisos;
+    }
+
+}
