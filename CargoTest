@@ -1,0 +1,46 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.*;
+
+import java.time.LocalDate;
+import java.util.logging.Logger;
+
+
+import static org.junit.jupiter.api.Assertions.*;
+
+//Se asume que es publico
+class PagoTest {
+
+    private static final Logger LOG = Logger.getLogger(PagoTest.class.getName());
+
+    @DisplayName("Pago con los mismos datos")
+    @Test
+    @Disabled
+    void testIncio(){
+
+        LOG.info("Inciando prueba pago...");
+
+        Pago resultado= new Pago(60000, LocalDate.of(2026, 10, 29), MedioPago.TRANSFERENCIA);
+        Pago recibido= new Pago(60000, LocalDate.of(2026, 10, 29), MedioPago.TRANSFERENCIA);
+
+        //Se espera que sean iguales
+        assertEquals(recibido, resultado);
+
+        LOG.info("Finalizando prueba pago...");
+    }
+    @Disabled("Pago con distintos datos")
+    @Test
+    void testNotEquals(){
+
+        LOG.info("Iniciando prueba pago");
+
+        Pago p= new Pago(60000, LocalDate.of(2026, 10, 29), MedioPago.TRANSFERENCIA);
+        Pago d= new Pago(50000, LocalDate.of(2026, 10, 28), MedioPago.TRANSFERENCIA);
+
+        assertNotEquals(d,p);
+
+        LOG.info("Finalizando prueba distintos datos...");
+    }
+
+
+}
