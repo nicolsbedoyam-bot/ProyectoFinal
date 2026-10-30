@@ -1,0 +1,51 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import java.time.LocalDate;
+import java.util.LinkedList;
+
+public class Recepcionista extends Rol{
+
+    private LocalDate fechaContratacion;
+    private boolean activo;
+
+    public Recepcionista(String nombre, String cedula, String telefono, String correo, String usuario, String contrasenia, LocalDate fechaContratacion, boolean activo){
+        super (nombre, cedula, telefono, correo, usuario, contrasenia);
+        this.fechaContratacion=fechaContratacion;
+        this.activo= activo;
+    }
+    @Override
+    public String toString(){
+        return "Recepcionista:" + nombre + "-" + cedula + "-" + telefono + "-" + correo + "-" + usuario;
+    }
+
+    @Override
+    public LinkedList<String> getPermisos() {
+        LinkedList<String> permisos= new LinkedList<>();
+        permisos.add("Registro de reservas por el canal Directo para huéspedes que llaman o llegan en persona");
+        permisos.add("Recepción de reservas, con su código de plataforma");
+        permisos.add("Confirmación de reservas Pendientes");
+        permisos.add("Registro de llegada (check-in) y de salida (check-out) de los grupos");
+        permisos.add("Registro de pagos y de cargos por servicios adicionales en el folio");
+        permisos.add("Cambio del estado operativo de los apartamentos");
+        permisos.add("Registro de novedades en un apartamento");
+        permisos.add("Declaración de no-show cuando el titular no llega antes de la hora límite");
+        return permisos;
+    }
+
+
+    public LocalDate getFechaContratacion () {
+        return fechaContratacion;
+    }
+
+    public void setFechaContratacion(LocalDate fechaContratacion) {
+        this.fechaContratacion = fechaContratacion;
+    }
+
+    public boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+}
