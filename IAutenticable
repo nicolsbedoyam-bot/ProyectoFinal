@@ -1,0 +1,6 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+public interface IAcumulable {
+
+    int monto();
+}
