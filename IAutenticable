@@ -1,6 +1,7 @@
 package co.edu.uniquindio.ProjectoFinal;
 
-public interface IAcumulable {
+public interface IAutenticable {
 
-    int monto();
+    boolean autenticar (String usuario, String contrasenia);
+
 }
