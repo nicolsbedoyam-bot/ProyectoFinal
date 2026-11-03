@@ -1,0 +1,31 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+public class ArchivoSerealizado implements IPersistenciaDato {
+
+    private String rutaArchivo;
+
+    public ArchivoSerealizado(String rutaArchivo){
+        this.rutaArchivo= rutaArchivo;
+    }
+
+    @Override
+    public void guardar(Empresa empresa){
+        //Simula la accion con un mensaje
+        System.out.println("Guarda toda la informacion en el archivo"+ rutaArchivo);
+    }
+
+    @Override
+    public Empresa cargar(){
+        //Simula la carga de la informacion
+        System.out.println("Carga toda la informacion en el archivo para que no se pierda al cerrar el programa:"+ rutaArchivo);
+        return new Empresa("Sin informacion", "Sin ubicacion");
+    }
+
+    public String getRutaArchivo() {
+        return rutaArchivo;
+    }
+
+    public void setRutaArchivo(String rutaArchivo) {
+        this.rutaArchivo = rutaArchivo;
+    }
+}
