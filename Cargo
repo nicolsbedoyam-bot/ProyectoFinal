@@ -2,7 +2,7 @@ package co.edu.uniquindio.ProjectoFinal;
 
 import java.time.LocalDate;
 
-public record Cargo (String concepto, int monto, Folio folio) implements IAcumulable{
+public record Cargo (String concepto, int monto, MedioPago medioPago) implements IAcumulable{
 
     @Override
     public String toString (){
