@@ -1,0 +1,60 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import java.time.LocalDate;
+
+public class Temporada {
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
+    private TemporadaAlojamiento tipo;
+
+    public Temporada(LocalDate fechaInicio, LocalDate fechaFin, TemporadaAlojamiento tipo){
+        this.fechaInicio=fechaInicio;
+        this.fechaFin= fechaFin;
+        this.tipo= tipo;
+    }
+
+    @Override
+    public String toString(){
+        return "Temporada:" + fechaInicio + "-" + fechaFin + "-" + tipo;
+    }
+    //Valida que una noche se encuentre dentro del rango de la temporada
+    public boolean contiene(LocalDate noche){
+        int n=numero (noche);
+        if(n>= numero(fechaInicio) && n<= numero (fechaFin)){
+            return true;
+        }
+        return false;
+    }
+    //Auxiliar
+    private int numero(LocalDate fecha){
+        return fecha.getYear()* 1000 + fecha.getMonthValue()* 100 + fecha.getDayOfMonth();
+    }
+
+    public LocalDate getFechaInicio() {
+
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(LocalDate fechaInicio) {
+
+        this.fechaInicio = fechaInicio;
+    }
+
+    public LocalDate getFechaFin() {
+
+        return fechaFin;
+    }
+
+    public void setFechaFin(LocalDate fechaFin) {
+
+        this.fechaFin = fechaFin;
+    }
+
+    public TemporadaAlojamiento getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TemporadaAlojamiento tipo) {
+        this.tipo = tipo;
+    }
+}
