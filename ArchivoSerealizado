@@ -18,7 +18,7 @@ public class ArchivoSerealizado implements IPersistenciaDato {
     public Empresa cargar(){
         //Simula la carga de la informacion
         System.out.println("Carga toda la informacion en el archivo para que no se pierda al cerrar el programa:"+ rutaArchivo);
-        return new Empresa("Sin informacion", "Sin ubicacion");
+        return new Empresa("Sin informacion", "Sin informacion", "Sin ubicacion");
     }
 
     public String getRutaArchivo() {
