@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Tarifa {
     private int valorPersonaNoche;
 
-    public Tarifa(int valorPersonaNoche ) {
+    public Tarifa(int valorPersonaNoche, TemporadaAlojamiento temporada ) {
         this.valorPersonaNoche = valorPersonaNoche;
     }
 
