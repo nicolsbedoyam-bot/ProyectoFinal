@@ -1,0 +1,59 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import java.io.File;
+
+
+public class ManejoImagen {
+
+    private String carpetaDestino;
+
+    public ManejoImagen(String carpetaDestino){
+
+        this.carpetaDestino=carpetaDestino;
+    }
+
+    public String guardarImagen(File origen, String nombre){
+        if (origen== null || nombre == null || nombre.equals("")){
+            return null;
+        }
+        if(!esFormatoValido(origen)){
+            return null;
+        }
+        return carpetaDestino + "/" + nombre;
+    }
+
+    public File cargarImagen(String ruta){
+        if(ruta== null || ruta.equals("")){
+            return null;
+        }
+        File archivo= new File(ruta);
+        if(!archivo.exists()){
+            return null;
+        }
+        return archivo;
+    }
+
+    public boolean esFormatoValido(File archivo){
+        if(archivo== null){
+            return false;
+        }
+        String nombreArchivo= archivo.getName();
+        if(nombreArchivo.length()<5){
+            return false;
+        }
+        String extension= nombreArchivo.substring(nombreArchivo.length()-4);
+        if(extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("jpn")){
+            return true;
+        }
+        return false;
+    }
+    
+    public String getCarpetaDestino() {
+
+        return carpetaDestino;
+    }
+
+    public void setCarpetaDestino(String carpetaDestino) {
+
+        this.carpetaDestino = carpetaDestino;
+    }
