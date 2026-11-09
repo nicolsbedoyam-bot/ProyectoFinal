@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 //Se asume que es publico
 class PagoTest {
 
-    private static final Logger LOG = Logger.getLogger(PagoTest.class.getName());
+    private static final Logger LOG = Logger.getLogger(CargoTest.class.getName());
 
     @DisplayName("Pago con los mismos datos")
     @Test
