@@ -15,7 +15,7 @@ public class Folio {
 
     public void agregarCargo(Cargo c){
         if (c == null){
-            IO.println("El cargo no puede ser nulo");
+            System.out.println("El cargo no puede ser nulo");
             return;
         }
         cargos.add(c);
@@ -23,7 +23,7 @@ public class Folio {
 
     public void registrarPago(Pago p){
         if (p == null){
-            IO.println("El pago no puede ser nulo");
+            System.out.println("El pago no puede ser nulo");
             return;
         }
         pagos.add(p);
