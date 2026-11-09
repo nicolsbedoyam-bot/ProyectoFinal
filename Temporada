@@ -27,7 +27,7 @@ public class Temporada {
     }
     //Auxiliar
     private int numero(LocalDate fecha){
-        return fecha.getYear()* 1000 + fecha.getMonthValue()* 100 + fecha.getDayOfMonth();
+        return fecha.getYear()* 10000 + fecha.getMonthValue()* 100 + fecha.getDayOfMonth();
     }
 
     public LocalDate getFechaInicio() {
