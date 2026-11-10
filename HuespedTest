@@ -1,0 +1,34 @@
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class HuespedTest {
+
+    private static final Logger LOG = Logger.getLogger(HuespedTest.class.getName());
+
+    @DisplayName("Prueba assertTrue")
+    @Test
+    void testTrue(){
+
+        LOG.info("Iniciando prueba huesped");
+
+        Huesped h= new Huesped("Alfonso Yepes", "4856409", "3173552901", "ayepes@gmail.com", "AlfoYepes", "9876", LocalDate.of(1980, 3, 12), "carpeta verificacion");
+
+        assertTrue(h.autenticar("AlfoYepes", "9876"));
+        assertFalse(h.autenticar("AlfYepez", "0000"));
+        assertFalse(h.getPermisos().isEmpty());
+
+        LOG.info("Finalizando prueba huesped");
+
+    }
+
+    @DisplayName("Prueba assertNotNull")
+    @Test
+    void testNotNull(){
+
+        Huesped titular= new Huesped("Alfonso Yepes", "4856409", "3173552901", "ayepes@gmail.com", "AlfoYepes", "", LocalDate.of(1980, 3, 12), "carpeta verificacion");
+
+        assertNotNull(titular.toString());
+        LOG.info("Finalizando prueba huespes not null");
+    }
+}
