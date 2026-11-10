@@ -1,0 +1,109 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class ApartamentoTest {
+
+    private Apartamento apto;
+
+    @BeforeEach
+    void preparar() {
+        LinkedList<String> caracteristicas = new LinkedList<>(List.of("chimenea", "balcon"));
+        LinkedList<String> fotos = new LinkedList<>(List.of("fotos/a.png"));
+        apto = new Apartamento("A101", "Apto Vista", 2, 4, caracteristicas, fotos);
+    }
+
+    @DisplayName("Un apartamento nuevo está activo, preparado y sin motivo de fuera de servicio")
+    @Test
+    void testValoresIniciales() {
+        assertEquals("A101", apto.getCodigo());
+        assertEquals("Apto Vista", apto.getNombre());
+        assertEquals(2, apto.getNumeroDormitorios());
+        assertEquals(4, apto.getCapacidadMaxima());
+        assertTrue(apto.isActivo());
+        assertEquals(EstadoOperativo.PREPARADO, apto.getEstadoOperativo());
+        assertTrue(apto.estaPreparado());
+        assertEquals("", apto.getFueraDeServicio());
+    }
+
+    @DisplayName("Registrar el motivo lo pasa a Fuera de servicio y lo deja no disponible")
+    @Test
+    void testRegistrarMotivoFueraDeServicio() {
+        apto.registrarMotivoFueraDeServicio("Daño en la tubería");
+
+        assertEquals(EstadoOperativo.FUERA_DE_SERVICIO, apto.getEstadoOperativo());
+        assertEquals("Daño en la tubería", apto.getFueraDeServicio());
+        assertFalse(apto.verificarDisponibilidad());
+        assertFalse(apto.estaPreparado());
+    }
+
+    @DisplayName("Un apartamento inactivo no está disponible")
+    @Test
+    void testInactivoNoDisponible() {
+        apto.setActivo(false);
+
+        assertFalse(apto.verificarDisponibilidad());
+    }
+
+    @DisplayName("Un apartamento activo y preparado está disponible")
+    @Test
+    void testDisponible() {
+        assertTrue(apto.verificarDisponibilidad());
+    }
+
+    @DisplayName("Se puede cambiar el estado operativo (En preparación a Preparado)")
+    @Test
+    void testActualizarEstadoOperativo() {
+        apto.actualizarEstadoOperativo(EstadoOperativo.EN_PREPARACION);
+        assertEquals(EstadoOperativo.EN_PREPARACION, apto.getEstadoOperativo());
+        assertFalse(apto.estaPreparado());
+
+        apto.actualizarEstadoOperativo(EstadoOperativo.PREPARADO);
+        assertTrue(apto.estaPreparado());
+    }
+
+    @DisplayName("actualizarEstadoOperativo no permite pasar a Fuera de servicio sin motivo")
+    @Test
+    void testActualizarNoAceptaFueraDeServicio() {
+        apto.actualizarEstadoOperativo(EstadoOperativo.FUERA_DE_SERVICIO);
+
+        assertEquals(EstadoOperativo.PREPARADO, apto.getEstadoOperativo());
+    }
+
+    @DisplayName("Al volver a servicio se borra el motivo")
+    @Test
+    void testVolverAServicioBorraMotivo() {
+        apto.registrarMotivoFueraDeServicio("Mantenimiento eléctrico");
+
+        apto.actualizarEstadoOperativo(EstadoOperativo.PREPARADO);
+
+        assertEquals(EstadoOperativo.PREPARADO, apto.getEstadoOperativo());
+        assertEquals("", apto.getFueraDeServicio());
+        assertTrue(apto.verificarDisponibilidad());
+    }
+
+    @DisplayName("Cada temporada devuelve su propia tarifa")
+    @Test
+    void testTarifasPorTemporada() {
+        apto.agregarTarifa(new Tarifa(50000, TemporadaAlojamiento.BAJA));
+        apto.agregarTarifa(new Tarifa(80000, TemporadaAlojamiento.ALTA));
+
+        assertEquals(50000, apto.getTarifa(TemporadaAlojamiento.BAJA));
+        assertEquals(80000, apto.getTarifa(TemporadaAlojamiento.ALTA));
+    }
+
+    @DisplayName("Una temporada sin tarifa devuelve 0")
+    @Test
+    void testTarifaInexistente() {
+        apto.agregarTarifa(new Tarifa(50000, TemporadaAlojamiento.BAJA));
+
+        assertEquals(0, apto.getTarifa(TemporadaAlojamiento.MEDIA));
+    }
+}
