@@ -1,0 +1,64 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class FolioTest {
+
+    private Folio folio;
+
+    @BeforeEach
+    void preparar() {
+        folio = new Folio();
+    }
+
+    @DisplayName("Un folio nuevo está en cero")
+    @Test
+    void testFolioVacio() {
+        assertEquals(0, folio.totalCargo());
+        assertEquals(0, folio.totalPago());
+        assertEquals(0, folio.calcularSaldo());
+        assertEquals(0, folio.calcularTotal());
+    }
+
+    @DisplayName("El saldo es la diferencia entre cargos y pagos")
+    @Test
+    void testCalcularSaldo() {
+        folio.agregarCargo(new Cargo("Alojamiento", 100000, TipoCargo.ALOJAMIENTO));
+        folio.agregarCargo(new Cargo("Lavandería", 20000, TipoCargo.SERVICIO_ADICIONAL));
+        folio.registrarPago(new Pago(30000, LocalDate.of(2026, 10, 29), MedioPago.EFECTIVO));
+
+        assertEquals(120000, folio.totalCargo());
+        assertEquals(30000, folio.totalPago());
+        assertEquals(90000, folio.calcularSaldo());
+        assertEquals(120000, folio.calcularTotal());
+    }
+
+    @DisplayName("Los cargos y pagos nulos no se agregan")
+    @Test
+    void testNulosNoSeAgregan() {
+        folio.agregarCargo(null);
+        folio.registrarPago(null);
+
+        assertEquals(0, folio.totalCargo());
+        assertEquals(0, folio.totalPago());
+    }
+
+    @DisplayName("Modificar la copia devuelta no altera el folio")
+    @Test
+    void testCopiaDefensiva() {
+        folio.agregarCargo(new Cargo("Alojamiento", 50000, TipoCargo.ALOJAMIENTO));
+        folio.registrarPago(new Pago(10000, LocalDate.of(2026, 10, 29), MedioPago.EFECTIVO));
+
+        folio.getCargos().clear();
+        folio.getPagos().clear();
+
+        assertEquals(1, folio.getCargos().size());
+        assertEquals(1, folio.getPagos().size());
+    }
+}
