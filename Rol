@@ -19,7 +19,6 @@ public abstract class Rol implements IAutenticable {
         this.contrasenia = contrasenia;
     }
 //Seguridad y autenticación: control de acceso de cada rol mediante usuario y contraseña
-    @Override
     public boolean autenticar(String usuario, String contrasenia){
         if(this.usuario.equals(usuario) && this.contrasenia.equals(contrasenia)){
             return true;
