@@ -1,0 +1,41 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class EstadoReservaTest {
+
+    private static final Logger LOG = Logger.getLogger(EstadoReservaTest.class.getName());
+
+    @DisplayName("Prueba assertTrue")
+    @Test
+    void testTrue(){
+
+        LOG.info("Iniciando prueba estado reserva...");
+
+        EstadoReserva estado= EstadoReserva.PENDIENTE;
+
+        assertTrue(estado == EstadoReserva.PENDIENTE);
+
+        LOG.info("El estado de la reserva es:" + estado.toString());
+        LOG.info("Finalizando prueba estado reserva");
+    }
+    @DisplayName("Estados permitidos de reserva diferentes")
+    @Test
+    void testNotEquals(){
+
+        LOG.info("Iniciando prueba estado reserva...");
+
+        EstadoReserva r= EstadoReserva.PENDIENTE;
+        EstadoReserva p= EstadoReserva.CONFIRMADA;
+
+        assertNotEquals(p,r);
+
+        LOG.info("Finalizando prueba estados permitidos de reserva diferentes");
+    }
+}
