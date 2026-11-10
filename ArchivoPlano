@@ -1,5 +1,11 @@
 package co.edu.uniquindio.ProjectoFinal;
 
+import java.io.*;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+
 public class ArchivoPlano implements IPersistenciaDato {
 
     private String rutaArchivo;
@@ -10,17 +16,99 @@ public class ArchivoPlano implements IPersistenciaDato {
 
     @Override
     public void guardar(Empresa empresa){
-        //Simula la accion con un mensaje
-        System.out.println("Guarda toda la informacion en el archivo"+ rutaArchivo);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutaArchivo))) {
+            bw.write("EMPRESA;" + empresa.getNit() + ";" + empresa.getNombre() + ";" + empresa.getUbicacion());
+            bw.newLine();
+            for (Apartamento a : empresa.getApartamentos()) {
+                bw.write("APARTAMENTO;" + a.getCodigo() + ";" + a.getNombre() + ";"
+                        + a.getNumeroDormitorios() + ";" + a.getCapacidadMaxima() + ";"
+                        + String.join("|", a.getCaracteristicas()) + ";"
+                        + String.join("|", a.getRutasFotos()) + ";"
+                        + a.getEstadoOperativo() + ";"
+                        + a.getFueraDeServicio() + ";"
+                        + a.isActivo());
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("No se pudo guardar: " + e.getMessage(), e);
+        }
     }
 
     @Override
     public Empresa cargar(){
-        //Simula la carga de la informacion
-        System.out.println("Carga toda la informacion en el archivo para que no se pierda al cerrar el programa:"+ rutaArchivo);
-        return new Empresa("Sin informacion", "Sin informacion", "Sin ubicacion");
+        File archivo = new File(rutaArchivo);
+        if (!archivo.exists()) {
+            return new Empresa("Sin informacion", "Sin informacion", "Sin ubicacion");
+        }
+
+        Empresa empresa = null;
+        HashMap<String, Apartamento> apartamentos = new HashMap<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                if (linea.isBlank()) {
+                    continue;
+                }
+                // El -1 conserva los campos vacíos (por ejemplo, un motivo sin texto)
+                String[] p = linea.split(";", -1);
+
+                switch (p[0]) {
+                    case "EMPRESA":
+                        empresa = new Empresa(p[1], p[2], p[3]);
+                        break;
+
+                    case "APARTAMENTO":
+                        Apartamento a = new Apartamento(p[1], p[2],
+                                Integer.parseInt(p[3]), Integer.parseInt(p[4]),
+                                convertirLista(p[5]), convertirLista(p[6]));
+                        a.setEstadoOperativo(EstadoOperativo.valueOf(p[7]));
+                        a.setFueraDeServicio(p[8]);   // usa el nombre de tu setter
+                        a.setActivo(Boolean.parseBoolean(p[9]));
+                        apartamentos.put(a.getCodigo(), a);
+                        if (empresa != null) {
+                            empresa.registrarApartamento(a);
+                        }
+                        break;
+
+                    case "TARIFA":
+                        Apartamento apto = apartamentos.get(p[1]);
+                        if (apto != null) {
+                            apto.agregarTarifa(new Tarifa(Integer.parseInt(p[3]),
+                                    TemporadaAlojamiento.valueOf(p[2])));
+                        }
+                        break;
+
+                    case "TEMPORADA":
+                        if (empresa != null) {
+                            empresa.registrarTemporada(new Temporada(
+                                    LocalDate.parse(p[1]), LocalDate.parse(p[2]),
+                                    TemporadaAlojamiento.valueOf(p[3])));
+                        }
+                        break;
+
+                    default:
+                        // Línea desconocida: se ignora
+                        break;
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("No se pudo cargar: " + e.getMessage(), e);
+        }
+
+        if (empresa == null) {
+            return new Empresa("Sin informacion", "Sin informacion", "Sin ubicacion");
+        }
+        return empresa;
     }
 
+    // Convierte "a|b|c" en una lista; un texto vacío da una lista vacía
+    private LinkedList<String> convertirLista(String texto) {
+        if (texto.isEmpty()) {
+            return new LinkedList<>();
+        }
+        return new LinkedList<>(Arrays.asList(texto.split("\\|")));
+    }
     public String getRutaArchivo() {
         return rutaArchivo;
     }
