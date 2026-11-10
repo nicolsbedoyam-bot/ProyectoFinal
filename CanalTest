@@ -1,0 +1,41 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class CanalTest {
+
+    private static final Logger LOG = Logger.getLogger(CanalTest.class.getName());
+
+    @DisplayName("Canales iguales")
+    @Test
+    void testInicio(){
+
+        LOG.info("Iniciando prueba canal...");
+
+        Canal registrado= Canal.PORTAL;
+
+        assertEquals(Canal.PORTAL, registrado);
+
+        LOG.info("Finalizando la prueba canal...");
+    }
+    @DisplayName("Canales diferentes")
+    @Test
+    void testNotEquals(){
+
+        LOG.info("Iniciando prueba canal...");
+
+        Canal c= Canal.PORTAL;
+        Canal d= Canal.EXTERNA;
+
+        assertNotEquals(d,c);
+
+        LOG.info("Finalizando prueba distintos datos...");
+    }
+
+}
