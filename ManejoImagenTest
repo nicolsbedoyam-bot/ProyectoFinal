@@ -1,0 +1,30 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class ManejoImagenTest {
+
+    private static final Logger LOG = Logger.getLogger(ManejoImagenTest.class.getName());
+
+    @DisplayName("Prueba asssertTrue/ assertFalse formato invalido")
+    @Test
+    void testFalseTrue(){
+
+        LOG.info("Iniciando prueba manejo de imagenes...");
+
+        ManejoImagen m= new ManejoImagen("Carpeta imagenes");
+
+        assertTrue(m.esFormatoValido(new File("imagen.png")));
+        assertTrue(m.esFormatoValido(new File("IMAGEN.JPG")));
+        assertFalse(m.esFormatoValido(new File("documento.Word")));
+        assertFalse(m.esFormatoValido(null));
+
+        LOG.info("Finalizando prueba manejo de imagenes...");
+    }
+}
