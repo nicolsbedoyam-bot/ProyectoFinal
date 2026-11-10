@@ -8,7 +8,7 @@ public class Apartamento {
     private int numeroDormitorios;
     private int capacidadMaxima;
     private LinkedList<String> caracteristicas;
-    private String motivoFueraDeServicio;
+    private String FueraDeServicio;
     private boolean activo;
     private LinkedList<String> rutasFotos;
     private EstadoOperativo estadoOperativo;
@@ -20,7 +20,7 @@ public class Apartamento {
         this.numeroDormitorios=numeroDormitorios;
         this.capacidadMaxima=capacidadMaxima;
         this.caracteristicas=caracteristicas;
-        this.motivoFueraDeServicio="";
+        this.FueraDeServicio="";
         this.activo=true;
         this.rutasFotos=rutasFotos;
         this.estadoOperativo= EstadoOperativo.PREPARADO;
@@ -31,7 +31,7 @@ public class Apartamento {
     public void actualizarEstadoOperativo (EstadoOperativo estadoOperativoActualizado){
         if(estadoOperativoActualizado != EstadoOperativo.FUERA_DE_SERVICIO){
             this.estadoOperativo= estadoOperativoActualizado;
-            this.motivoFueraDeServicio= "";
+            this.FueraDeServicio= "";
         }
     }
 
@@ -45,8 +45,7 @@ public class Apartamento {
     //Cuando un apartamento pase a Fuera de servicio se deberá registrar el motivo, por ejemplo: daño en la tubería o mantenimiento eléctrico
     public void registrarMotivoFueraDeServicio(String motivoDueraDeServicio) {
         this.estadoOperativo= EstadoOperativo.FUERA_DE_SERVICIO;
-        this.motivoFueraDeServicio= motivoDueraDeServicio;
-
+        this.FueraDeServicio= motivoDueraDeServicio;
     }
 
     //Tarifas por apartamento.
@@ -59,6 +58,7 @@ public class Apartamento {
         return 0;
     }
     public void agregarTarifa (Tarifa tarifa){
+
         tarifas.add(tarifa);
     }
 
@@ -70,74 +70,92 @@ public class Apartamento {
     }
 
     public String getCodigo() {
+
         return codigo;
     }
 
     public void setCodigo(String codigo) {
+
         this.codigo = codigo;
     }
 
     public String getNombre() {
+
         return nombre;
     }
 
     public void setNombre(String nombre) {
+
         this.nombre = nombre;
     }
 
     public int getNumeroDormitorios() {
+
         return numeroDormitorios;
     }
 
     public void setNumeroDormitorios(int numeroDormitorios) {
+
         this.numeroDormitorios = numeroDormitorios;
     }
 
     public int getCapacidadMaxima() {
+
         return capacidadMaxima;
     }
 
     public void setCapacidadMaxima(int capacidadMaxima) {
+
         this.capacidadMaxima = capacidadMaxima;
     }
 
     public LinkedList<String> getCaracteristicas() {
+
         return caracteristicas;
     }
 
     public void setCaracteristicas(LinkedList<String> caracteristicas) {
+
         this.caracteristicas = caracteristicas;
     }
 
-    public String getMotivoDueraDeServicio() {
-        return motivoFueraDeServicio;
+    public String getFueraDeServicio() {
+
+        return FueraDeServicio;
     }
 
-    public void setMotivoDueraDeServicio(String motivoDueraDeServicio) {
-        this.motivoFueraDeServicio = motivoDueraDeServicio;
+    public void setFueraDeServicio(String FueraDeServicio) {
+
+        this.FueraDeServicio = FueraDeServicio;
     }
 
     public boolean isActivo() {
+
         return activo;
     }
 
     public void setActivo(boolean activo) {
+
         this.activo = activo;
     }
 
     public LinkedList<String> getRutasFotos() {
+
         return rutasFotos;
     }
 
     public void setRutasFotos(LinkedList<String> rutasFotos) {
+
         this.rutasFotos = rutasFotos;
     }
 
     public EstadoOperativo getEstadoOperativo() {
+
         return estadoOperativo;
     }
 
     public void setEstadoOperativo(EstadoOperativo estadoOperativo) {
+
         this.estadoOperativo = estadoOperativo;
     }
 }
