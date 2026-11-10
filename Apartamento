@@ -3,159 +3,68 @@ package co.edu.uniquindio.ProjectoFinal;
 import java.util.LinkedList;
 
 public class Apartamento {
-    private String codigo;
-    private String nombre;
-    private int numeroDormitorios;
-    private int capacidadMaxima;
-    private LinkedList<String> caracteristicas;
-    private String FueraDeServicio;
-    private boolean activo;
-    private LinkedList<String> rutasFotos;
-    private EstadoOperativo estadoOperativo;
-    private LinkedList<Tarifa> tarifas;
+    private int diasDevolucion;
+    private int diasRetencion;
+    private double porcentajeRetencion;
 
-    public Apartamento(String codigo, String nombre, int numeroDormitorios, int capacidadMaxima, LinkedList<String> caracteristicas, LinkedList<String> rutasFotos){
-        this.codigo=codigo;
-        this.nombre=nombre;
-        this.numeroDormitorios=numeroDormitorios;
-        this.capacidadMaxima=capacidadMaxima;
-        this.caracteristicas=caracteristicas;
-        this.FueraDeServicio="";
-        this.activo=true;
-        this.rutasFotos=rutasFotos;
-        this.estadoOperativo= EstadoOperativo.PREPARADO;
-        this.tarifas= new LinkedList<>();
+    public PoliticaCancelacion(int diasDevolucion, int diasRetencion, double porcentajeRetencion){
+        this.diasDevolucion=diasDevolucion;
+        this.diasRetencion=diasRetencion;
+        this.porcentajeRetencion=porcentajeRetencion;
     }
 
-    //Cambio del estado operativo de los apartamentos (por ejemplo, de En preparación a Preparado)
-    public void actualizarEstadoOperativo (EstadoOperativo estadoOperativoActualizado){
-        if(estadoOperativoActualizado != EstadoOperativo.FUERA_DE_SERVICIO){
-            this.estadoOperativo= estadoOperativoActualizado;
-            this.FueraDeServicio= "";
+    //entre 2 y 7 días se retiene el 50% del valor de la estancia; con menos de 48 horas
+    public int calcularRetencion(int valorEstancia, LocalDate ahora, LocalDate entrada, EstadoReserva motivo){
+        if(ahora == null || entrada == null){
+            return 0;
         }
-    }
-
-    public boolean verificarDisponibilidad(){
-        if (this.activo && this.estadoOperativo != EstadoOperativo.FUERA_DE_SERVICIO){
-            return true;
+        //en caso de no-show, se retiene el 100 %
+        if(motivo== EstadoReserva.NO_SHOW){
+            return valorEstancia;
         }
-        return false;
-    }
-
-    //Cuando un apartamento pase a Fuera de servicio se deberá registrar el motivo, por ejemplo: daño en la tubería o mantenimiento eléctrico
-    public void registrarMotivoFueraDeServicio(String motivoDueraDeServicio) {
-        this.estadoOperativo= EstadoOperativo.FUERA_DE_SERVICIO;
-        this.FueraDeServicio= motivoDueraDeServicio;
-    }
-
-    //Tarifas por apartamento.
-    public int getTarifa(TemporadaAlojamiento t){
-        for(Tarifa tarifa: tarifas){
-            if(tarifa.getTemporada()== t){
-                return tarifa.getValorPersonaNoche();
-            }
+        long dias= ChronoUnit.DAYS.between(ahora, entrada);
+        //con más de 7 días de antelación se devuelvetodo lo pagado
+        if(dias> diasDevolucion){
+            return 0;
         }
-        return 0;
-    }
-    public void agregarTarifa (Tarifa tarifa){
-
-        tarifas.add(tarifa);
-    }
-
-    public boolean estaPreparado() {
-        if (this.estadoOperativo.equals(EstadoOperativo.PREPARADO)) {
-            return true;
+        int fechaEntrada= numero(entrada);
+        //con más de 7 días de antelación se devuelvetodo
+        if(fechaEntrada> numero(ahora.plusDays(diasRetencion))){
+            return 0;
         }
-        return false;
+        //entre 2 y 7 días se retiene el 50 % del valor de la estancia
+        if(dias >= diasRetencion) {
+            return (int) (valorEstancia * porcentajeRetencion / 100);
+        }
+        //con menos de 48 horas, o en caso de no-show, se retiene el 100 %
+        return valorEstancia;
+    }
+    //MetodoAuxiliar
+    private int numero(LocalDate fecha){
+        return fecha.getYear()* 10000 + fecha.getMonthValue()*100 + fecha.getDayOfMonth();
     }
 
-    public String getCodigo() {
-
-        return codigo;
+    public int getDiasDevolucion() {
+        return diasDevolucion;
     }
 
-    public void setCodigo(String codigo) {
-
-        this.codigo = codigo;
+    public void setDiasDevolucion(int diasDevolucion) {
+        this.diasDevolucion = diasDevolucion;
     }
 
-    public String getNombre() {
-
-        return nombre;
+    public int getDiasRetencion() {
+        return diasRetencion;
     }
 
-    public void setNombre(String nombre) {
-
-        this.nombre = nombre;
+    public void setDiasRetencion(int diasRetencion) {
+        this.diasRetencion = diasRetencion;
     }
 
-    public int getNumeroDormitorios() {
-
-        return numeroDormitorios;
+    public double getPorcentajeRetencion() {
+        return porcentajeRetencion;
     }
 
-    public void setNumeroDormitorios(int numeroDormitorios) {
-
-        this.numeroDormitorios = numeroDormitorios;
-    }
-
-    public int getCapacidadMaxima() {
-
-        return capacidadMaxima;
-    }
-
-    public void setCapacidadMaxima(int capacidadMaxima) {
-
-        this.capacidadMaxima = capacidadMaxima;
-    }
-
-    public LinkedList<String> getCaracteristicas() {
-
-        return caracteristicas;
-    }
-
-    public void setCaracteristicas(LinkedList<String> caracteristicas) {
-
-        this.caracteristicas = caracteristicas;
-    }
-
-    public String getFueraDeServicio() {
-
-        return FueraDeServicio;
-    }
-
-    public void setFueraDeServicio(String FueraDeServicio) {
-
-        this.FueraDeServicio = FueraDeServicio;
-    }
-
-    public boolean isActivo() {
-
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-
-        this.activo = activo;
-    }
-
-    public LinkedList<String> getRutasFotos() {
-
-        return rutasFotos;
-    }
-
-    public void setRutasFotos(LinkedList<String> rutasFotos) {
-
-        this.rutasFotos = rutasFotos;
-    }
-
-    public EstadoOperativo getEstadoOperativo() {
-
-        return estadoOperativo;
-    }
-
-    public void setEstadoOperativo(EstadoOperativo estadoOperativo) {
-
-        this.estadoOperativo = estadoOperativo;
+    public void setPorcentajeRetencion(double porcentajeRetencion) {
+        this.porcentajeRetencion = porcentajeRetencion;
     }
 }
