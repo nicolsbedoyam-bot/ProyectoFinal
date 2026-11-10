@@ -1,0 +1,27 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class IAcumulableTest {
+
+    @DisplayName("Cargo y Pago se pueden sumar a través de la interfaz IAcumulable")
+    @Test
+    void testSumaPolimorfica() {
+        List<IAcumulable> items = List.of(
+                new Cargo("Alojamiento", 50000, TipoCargo.ALOJAMIENTO),
+                new Pago(30000, LocalDate.of(2026, 10, 29), MedioPago.EFECTIVO));
+
+        int suma = 0;
+        for (IAcumulable item : items) {
+            suma += item.monto();
+        }
+
+        assertEquals(80000, suma);
+    }
+}
