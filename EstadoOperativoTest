@@ -1,0 +1,42 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class EstadoOperativoTest {
+
+    private static final Logger LOG = Logger.getLogger(EstadoOperativoTest.class.getName());
+
+    @DisplayName("Estados operativos distintos")
+    @Test
+    void testNotEquals(){
+
+        LOG.info("Iniciando prueba estado operativo...");
+
+        EstadoOperativo e= EstadoOperativo.EN_PREPARACION;
+        EstadoOperativo d= EstadoOperativo.PREPARADO;
+
+        assertNotEquals(d,e);
+
+        LOG.info("Finalizando prueba distintos estados operativos...");
+    }
+    @DisplayName("Prueba assertTrue")
+    @Test
+    void testTrue(){
+
+        LOG.info("Iniciando prueba estado operativo...");
+
+        EstadoOperativo registrado= EstadoOperativo.OCUPADO;
+
+        assertTrue(registrado == EstadoOperativo.OCUPADO);
+
+        LOG.info("El estado operativo es:" + registrado.toString());
+        LOG.info("Finalizando prueba estado operativo...");
+    }
+
+}
