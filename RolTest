@@ -1,0 +1,82 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.LinkedList;
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class RolTest {
+
+    private static final Logger LOG = Logger.getLogger(RolTest.class.getName());
+
+    private Rol rol;
+
+    @BeforeEach
+    void preparar() {
+
+        rol = new Rol("Valery Mendoza", "1982736453", "32456712", "valeMendoza@correo.com", "valMendoza", "1234") {
+            @Override
+            public LinkedList<String> getPermisos() {
+                return new LinkedList<>();
+            }
+        };
+    }
+
+    @DisplayName("Los datos del constructor quedan guardados")
+    @Test
+    void testGetters() {
+
+        assertEquals("Valery Mendoza", rol.getNombre());
+        assertEquals("1982736453", rol.getCedula());
+        assertEquals("32456712", rol.getTelefono());
+        assertEquals("valeMendoza@correo.com", rol.getCorreo());
+        assertEquals("valMendoza", rol.getUsuario());
+
+    }
+
+    @DisplayName("Autenticacion con usuario y contraseña correctos")
+    @Test
+    void testAutenticarCorrecto(){
+
+        assertTrue(rol.autenticar("valMendoza", "1234"));
+    }
+
+    @DisplayName("Autenticacion con contraña incorrecta")
+    @Test
+    void testContraseniaIncorrecta(){
+
+        assertFalse(rol.autenticar("valMendoza", "5678"));
+    }
+
+    @DisplayName("Autentica con usuario incorrecto")
+    @Test
+    void testUsuarioIncorrecto() {
+
+        assertFalse(rol.autenticar("RobertPerez", "1234"));
+
+    }
+
+
+    @DisplayName("Autentica con datos nulos")
+    @Test
+    void testDatosNulos() {
+
+        assertFalse(rol.autenticar(null, null));
+
+    }
+
+    @DisplayName("Rol cumple la interfaz IAutenticable")
+    @Test
+    void testEsAutenticable() {
+
+        IAutenticable autenticable = rol;
+
+        assertTrue(autenticable.autenticar("valMendoza", "1234"));
+    }
+
+}
