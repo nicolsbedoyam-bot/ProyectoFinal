@@ -1,0 +1,39 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class MedioPagoTest {
+
+    private static final Logger LOG = Logger.getLogger(MedioPagoTest.class.getName());
+
+    @DisplayName("Medios de pago diferentes")
+    @Test
+    void testNotEquals(){
+
+        LOG.info("Iniciando pruba medios de pago diferentes...");
+
+        MedioPago m= MedioPago.TRANSFERENCIA;
+        MedioPago d= MedioPago.EFECTIVO;
+
+        assertNotEquals(d,m);
+
+        LOG.info("Finalizando prueba medios de pagos diferentes...");
+    }
+    @DisplayName("Prueba assertNotNull")
+    @Test
+    void testNotNull(){
+
+        MedioPago usado= MedioPago.TRANSFERENCIA;
+
+        assertNotNull(usado);
+
+        LOG.info(usado.toString());
+        LOG.info("Finalizando prueba medio de pago");
+    }
+}
