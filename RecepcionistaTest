@@ -1,0 +1,30 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class RecepcionistaTest {
+
+    private static final Logger LOG = Logger.getLogger(RecepcionistaTest.class.getName());
+
+    @DisplayName("Prueba assertTrue")
+    @Test
+    void testTrue(){
+
+        LOG.info("Iniciando prueba recepcionista...");
+
+        Recepcionista r= new Recepcionista("Valery Mendoza", "1982736453", "32456712", "valeMendoza@gmail.com", "valMendoza", "1234", LocalDate.of(2025, 7, 17), true);
+
+        assertTrue(r.autenticar("valMendoza", "1234"));
+        assertTrue(r.getActivo());
+        assertFalse(r.autenticar("RobertPerez", "5678"));
+        assertFalse(r.getPermisos().isEmpty());
+
+        LOG.info("Iniciando prueba recepcionista...");
+    }
+}
