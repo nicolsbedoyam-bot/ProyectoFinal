@@ -1,46 +1,40 @@
 package co.edu.uniquindio.ProjectoFinal;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.logging.Logger;
-
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//Se asume que es publico
-class PagoTest {
+class CargoTest {
 
-    private static final Logger LOG = Logger.getLogger(CargoTest.class.getName());
+    private static final Logger LOG= Logger.getLogger(CargoTest.class.getName());
 
-    @DisplayName("Pago con los mismos datos")
+    @DisplayName("Cargo con los mismos datos")
     @Test
-    @Disabled
-    void testIncio(){
+    void testInicio(){
 
-        LOG.info("Inciando prueba pago...");
+        LOG.info("Iniciando prueba cargo...");
 
-        Pago resultado= new Pago(60000, LocalDate.of(2026, 10, 29), MedioPago.TRANSFERENCIA);
-        Pago recibido= new Pago(60000, LocalDate.of(2026, 10, 29), MedioPago.TRANSFERENCIA);
+        Cargo resultado= new Cargo ("Alojamiento", 50000, TipoCargo.ALOJAMIENTO);
 
-        //Se espera que sean iguales
-        assertEquals(recibido, resultado);
+        assertEquals(new Cargo("Alojamiento", 50000, TipoCargo.ALOJAMIENTO ), resultado);
 
-        LOG.info("Finalizando prueba pago...");
+        LOG.info("Finalizando prueba cargo...");
     }
-    @Disabled("Pago con distintos datos")
+    @DisplayName("Pago con distintos datos")
     @Test
     void testNotEquals(){
 
-        LOG.info("Iniciando prueba pago");
+        LOG.info("Iniciando prueba cargo...");
 
-        Pago p= new Pago(60000, LocalDate.of(2026, 10, 29), MedioPago.TRANSFERENCIA);
-        Pago d= new Pago(50000, LocalDate.of(2026, 10, 28), MedioPago.TRANSFERENCIA);
+        Cargo c= new Cargo("Alojamiento", 50000, TipoCargo.ALOJAMIENTO);
+        Cargo d= new Cargo("Lavanderia", 20000, TipoCargo.SERVICIO_ADICIONAL);
 
-        assertNotEquals(d,p);
+        assertNotEquals(d,c);
 
         LOG.info("Finalizando prueba distintos datos...");
     }
-
-
 }
