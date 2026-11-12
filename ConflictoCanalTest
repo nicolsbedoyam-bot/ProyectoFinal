@@ -22,8 +22,8 @@ class ConflictoCanalTest {
 
         LocalDateTime fecha= LocalDateTime.of(2026, 11, 5, 4, 0);
 
-        ConflictoCanal cc= new ConflictoCanal("R-987", "apto 901", LocalDate.of(2026, 11, 5), LocalDate.of(2026, 11, 8), "Choca con una reserva", fecha);
-        ConflictoCanal d= new ConflictoCanal("R-987", "apto 801", LocalDate.of(2026, 11, 6), LocalDate.of(2026, 11, 9), "Choca con una reserva", fecha);
+        ConflictoCanal cc= new ConflictoCanal("R-987", "A101", LocalDate.of(2026, 11, 5), LocalDate.of(2026, 11, 8), "Choca con una reserva", fecha);
+        ConflictoCanal d= new ConflictoCanal("R-987", "A103", LocalDate.of(2026, 11, 6), LocalDate.of(2026, 11, 9), "Choca con una reserva", fecha);
 
         assertNotEquals(d, cc);
 
@@ -35,8 +35,8 @@ class ConflictoCanalTest {
 
         LOG.info("Iniciando prueba conflicto canal");
 
-        ConflictoCanal registrado= new ConflictoCanal("R-987", "apto 901", LocalDate.of(2026, 11, 5), LocalDate.of(2026, 11, 8), "", LocalDateTime.now());
-        ConflictoCanal percibido= new ConflictoCanal("R-987", "apto 901", LocalDate.of(2026, 10, 7), LocalDate.of(2026, 10, 14), "", LocalDateTime.now());
+        ConflictoCanal registrado= new ConflictoCanal("R-987", "A103", LocalDate.of(2026, 11, 5), LocalDate.of(2026, 11, 8), "", LocalDateTime.now());
+        ConflictoCanal percibido= new ConflictoCanal("R-987", "A101", LocalDate.of(2026, 10, 7), LocalDate.of(2026, 10, 14), "", LocalDateTime.now());
         ConflictoCanal mismo= registrado;
 
         assertTrue(registrado == mismo);
