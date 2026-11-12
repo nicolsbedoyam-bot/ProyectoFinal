@@ -31,7 +31,7 @@ class AdministradorAlojamientoTest {
         AdministradorAlojamiento aa= new AdministradorAlojamiento("Roberto Perez", "4840562", "3136792307", "perezr@gmail.com", "RobertPerez", "5678");
 
         assertTrue(aa.autenticar("RobertPerez", "5678"));
-        assertFalse(aa.autenticar("RobPeres", "1010"));
+        assertFalse(aa.autenticar("valMendoza", "1234"));
         assertFalse(aa.getPermisos().isEmpty());
 
         LOG.info("Finalizando prueba administrador alojamiento");
