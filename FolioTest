@@ -29,14 +29,14 @@ class FolioTest {
     @DisplayName("El saldo es la diferencia entre cargos y pagos")
     @Test
     void testCalcularSaldo() {
-        folio.agregarCargo(new Cargo("Alojamiento", 100000, TipoCargo.ALOJAMIENTO));
+        folio.agregarCargo(new Cargo("Alojamiento", 50000, TipoCargo.ALOJAMIENTO));
         folio.agregarCargo(new Cargo("Lavandería", 20000, TipoCargo.SERVICIO_ADICIONAL));
-        folio.registrarPago(new Pago(30000, LocalDate.of(2026, 10, 29), MedioPago.EFECTIVO));
+        folio.registrarPago(new Pago(15000, LocalDate.of(2026, 10, 29), MedioPago.TRANSFERENCIA));
 
-        assertEquals(120000, folio.totalCargo());
-        assertEquals(30000, folio.totalPago());
-        assertEquals(90000, folio.calcularSaldo());
-        assertEquals(120000, folio.calcularTotal());
+        assertEquals(70000, folio.totalCargo());
+        assertEquals(15000, folio.totalPago());
+        assertEquals(55000, folio.calcularSaldo());
+        assertEquals(70000, folio.calcularTotal());
     }
 
     @DisplayName("Los cargos y pagos nulos no se agregan")
@@ -53,7 +53,7 @@ class FolioTest {
     @Test
     void testCopiaDefensiva() {
         folio.agregarCargo(new Cargo("Alojamiento", 50000, TipoCargo.ALOJAMIENTO));
-        folio.registrarPago(new Pago(10000, LocalDate.of(2026, 10, 29), MedioPago.EFECTIVO));
+        folio.registrarPago(new Pago(15000, LocalDate.of(2026, 10, 29), MedioPago.TRANSFERENCIA));
 
         folio.getCargos().clear();
         folio.getPagos().clear();
