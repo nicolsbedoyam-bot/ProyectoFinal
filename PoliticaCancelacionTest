@@ -1,0 +1,66 @@
+package co.edu.uniquindio.ProyectoFinal;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class PoliticaCancelacionTest {
+
+    private static final LocalDate AHORA = LocalDate.of(2026, 11, 10);
+    private static final int VALOR = 100000;
+
+    private PoliticaCancelacion politica;
+
+    @BeforeEach
+    void preparar() {
+        // 7 días para devolución total, 2 días mínimo para retención parcial, 50 %
+        politica = new PoliticaCancelacion(7, 2, 50);
+    }
+
+    @DisplayName("Más de 7 días de antelación: se devuelve todo (retención 0)")
+    @Test
+    void testMasDeSieteDias() {
+        assertEquals(0, politica.calcularRetencion(VALOR, AHORA, AHORA.plusDays(8), EstadoReserva.CANCELADA));
+        assertEquals(0, politica.calcularRetencion(VALOR, AHORA, AHORA.plusDays(30), EstadoReserva.CANCELADA));
+    }
+
+    @DisplayName("Entre 2 y 7 días: se retiene el 50 %")
+    @Test
+    void testEntreDosYSieteDias() {
+        assertEquals(50000, politica.calcularRetencion(VALOR, AHORA, AHORA.plusDays(7), EstadoReserva.CANCELADA));
+        assertEquals(50000, politica.calcularRetencion(VALOR, AHORA, AHORA.plusDays(5), EstadoReserva.CANCELADA));
+        assertEquals(50000, politica.calcularRetencion(VALOR, AHORA, AHORA.plusDays(3), EstadoReserva.CANCELADA));
+        assertEquals(50000, politica.calcularRetencion(VALOR, AHORA, AHORA.plusDays(2), EstadoReserva.CANCELADA));
+    }
+
+    @DisplayName("Menos de 48 horas: se retiene el 100 %")
+    @Test
+    void testMenosDe48Horas() {
+        assertEquals(VALOR, politica.calcularRetencion(VALOR, AHORA, AHORA.plusDays(1), EstadoReserva.CANCELADA));
+        assertEquals(VALOR, politica.calcularRetencion(VALOR, AHORA, AHORA, EstadoReserva.CANCELADA));
+    }
+
+    @DisplayName("Entrada ya pasada: se retiene el 100 %")
+    @Test
+    void testEntradaPasada() {
+        assertEquals(VALOR, politica.calcularRetencion(VALOR, AHORA, AHORA.minusDays(1), EstadoReserva.CANCELADA));
+    }
+
+    @DisplayName("No-show: se retiene el 100 % sin importar la antelación")
+    @Test
+    void testNoShow() {
+        assertEquals(VALOR, politica.calcularRetencion(VALOR, AHORA, AHORA.plusDays(30), EstadoReserva.NO_SHOW));
+        assertEquals(VALOR, politica.calcularRetencion(VALOR, AHORA, AHORA.plusDays(1), EstadoReserva.NO_SHOW));
+    }
+
+    @DisplayName("Fechas nulas: retención 0")
+    @Test
+    void testFechasNulas() {
+        assertEquals(0, politica.calcularRetencion(VALOR, null, AHORA, EstadoReserva.CANCELADA));
+        assertEquals(0, politica.calcularRetencion(VALOR, AHORA, null, EstadoReserva.CANCELADA));
+    }
+}
