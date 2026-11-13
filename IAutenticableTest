@@ -1,0 +1,46 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class IAutenticableTest {
+
+    private static final Logger LOG = Logger.getLogger(IAutenticableTest.class.getName());
+
+    private final IAutenticable autenticable= ((usuario, contrasenia) -> "valMendoza".equals(usuario) && "1234".equals(contrasenia));
+
+    @DisplayName("La interfaz autentica usuario y contraseña correctos")
+    @Test
+    void testAutenticarCorrectos() {
+
+        assertTrue(autenticable.autenticar("valMendoza", "1234"));
+
+    }
+    @DisplayName("La interfaz autentica usuario y contraseña incorrectos")
+    @Test
+    void testAutenticarIncorrectos(){
+
+        assertFalse(autenticable.autenticar("valMendoza", "5678"));
+        assertFalse(autenticable.autenticar("RobertPerez", "1234"));
+    }
+
+    @DisplayName("Rol cumple la interfaz IAutenticable")
+    @Test
+    void testEsAutenticable() {
+
+        IAutenticable rol = new Rol("Valery Mendoza", "1982736453", "32456712", "valeMendoza@gmail.com", "valMendoza", "1234") {
+            @Override
+            public java.util.LinkedList<String> getPermisos() {
+                return new java.util.LinkedList<>();
+            }
+        };
+
+        assertTrue(rol.autenticar("valMendoza", "1234"));
+        assertFalse(rol.autenticar("valMendoza", "otra"));
+    }
+
+}
