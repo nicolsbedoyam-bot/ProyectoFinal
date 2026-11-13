@@ -1,0 +1,35 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class NovedadTest {
+
+    private static final Logger LOG = Logger.getLogger(NovedadTest.class.getName());
+
+    @DisplayName("Novedades con distintos datos")
+    @Test
+    void testNotEquals(){
+
+        LOG.info("Iniciando prueba novedad");
+
+        Apartamento apartamento1= new Apartamento("A101", "Apto Vista", 2, 4, new LinkedList<>(), new LinkedList<>());
+        Recepcionista recepcionista1= new Recepcionista("Valry Mendoza", "1982736453", "32456712", "valeMendoza@gmail.com", "valMendoza", "1234", LocalDate.of(2025, 7, 17), true);
+
+        Apartamento apartamento2= new Apartamento("A103", "Apto Suite", 1, 2, new LinkedList<>(), new LinkedList<>());
+        Recepcionista recepcionista2= new Recepcionista("Vanesa Torres", "1907336287", "32577525", "vaneTorres@gmail.com", "vaneTorres", "5678", LocalDate.of(2026, 2, 8), true);
+
+        Novedad n= new Novedad("", LocalDate.of(2026, 11, 5), TipoNovedad.DANIO, apartamento1, recepcionista1);
+        Novedad t= new Novedad("", LocalDate.of(2026, 11, 6), TipoNovedad.OTRA, apartamento2, recepcionista2);
+
+        assertNotEquals(t,n);
+
+        LOG.info("Finalizando prueba novedad");
+    }
+}
