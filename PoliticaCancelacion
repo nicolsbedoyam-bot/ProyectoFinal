@@ -15,7 +15,6 @@ public class PoliticaCancelacion {
         this.porcentajeRetencion=porcentajeRetencion;
     }
 
-    //Política de cancelación: con más de 7 días de antelación se devuelvetodo lo pagado
     //entre 2 y 7 días se retiene el 50% del valor de la estancia; con menos de 48 horas
     public int calcularRetencion(int valorEstancia, LocalDate ahora, LocalDate entrada, EstadoReserva motivo){
         if(ahora == null || entrada == null){
@@ -25,15 +24,26 @@ public class PoliticaCancelacion {
         if(motivo== EstadoReserva.NO_SHOW){
             return valorEstancia;
         }
-        int fechaEntrada= numero(entrada);
-        if(fechaEntrada> numero(ahora.plusDays(diasRetencion))){
-            return (int)(valorEstancia* porcentajeRetencion / 100);
+        long dias= ChronoUnit.DAYS.between(ahora, entrada);
+        //con más de 7 días de antelación se devuelvetodo lo pagado
+        if(dias> diasDevolucion){
+            return 0;
         }
+        int fechaEntrada= numero(entrada);
+        //con más de 7 días de antelación se devuelvetodo
+        if(fechaEntrada> numero(ahora.plusDays(diasRetencion))){
+            return 0;
+        }
+        //entre 2 y 7 días se retiene el 50 % del valor de la estancia
+        if(dias >= diasRetencion) {
+            return (int) (valorEstancia * porcentajeRetencion / 100);
+        }
+        //con menos de 48 horas, o en caso de no-show, se retiene el 100 %
         return valorEstancia;
     }
     //MetodoAuxiliar
     private int numero(LocalDate fecha){
-        return fecha.getYear()* 1000+ fecha.getMonthValue()*100 + fecha.getDayOfMonth();
+        return fecha.getYear()* 10000 + fecha.getMonthValue()*100 + fecha.getDayOfMonth();
     }
 
     public int getDiasDevolucion() {
