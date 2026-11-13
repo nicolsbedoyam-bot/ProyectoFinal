@@ -29,11 +29,6 @@ public class PoliticaCancelacion {
         if(dias> diasDevolucion){
             return 0;
         }
-        int fechaEntrada= numero(entrada);
-        //con más de 7 días de antelación se devuelvetodo
-        if(fechaEntrada> numero(ahora.plusDays(diasRetencion))){
-            return 0;
-        }
         //entre 2 y 7 días se retiene el 50 % del valor de la estancia
         if(dias >= diasRetencion) {
             return (int) (valorEstancia * porcentajeRetencion / 100);
