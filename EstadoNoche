@@ -1,7 +1,0 @@
-package co.edu.uniquindio.ProjectoFinal;
-
-public enum EstadoNoche {
-    LIBRE,
-    OCUPADA,
-    BLOQUEADA;
-}
