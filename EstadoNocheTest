@@ -1,0 +1,39 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class EstadoNocheTest {
+
+    private static final Logger LOG = Logger.getLogger(EstadoNocheTest.class.getName());
+
+    @DisplayName("Prueba assertNotNull")
+    @Test
+    void testNotNull(){
+
+        EstadoNoche posible= EstadoNoche.LIBRE;
+
+        assertNotNull(posible);
+
+        LOG.info(posible.toString());
+        LOG.info("Finalizando prueba estado noche not null");
+    }
+    @DisplayName("Estados noche distintos")
+    @Test
+    void testNotEquals(){
+
+        LOG.info("Iniciando prueba estados noche distintos...");
+
+        EstadoNoche e= EstadoNoche.LIBRE;
+        EstadoNoche d= EstadoNoche.OCUPADA;
+
+        assertNotEquals(d,e);
+
+        LOG.info("Finalizando prueba estados noche distintos");
+    }
+}
