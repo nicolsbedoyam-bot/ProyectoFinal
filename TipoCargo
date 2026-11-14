@@ -4,5 +4,5 @@ public enum TipoCargo {
     ALOJAMIENTO,
     SERVICIO_ADICIONAL,
     PENALIDAD,
-    AJUSTE;
+    AJUSTE
 }
