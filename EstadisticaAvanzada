@@ -1,0 +1,97 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
+public class EstadisticaAvanzada {
+
+    private final Empresa empresa;
+
+    public EstadisticaAvanzada(Empresa empresa){
+        this.empresa= empresa;
+    }
+
+    public double ocupacionPorTemporada(TemporadaAlojamiento tipo){
+        int nochesTemporada=0;
+        int nochesTotales=0;
+        for(Reserva r: empresa.getReservas()){
+            if(r != null && r.getEstado()!= EstadoReserva.CANCELADA && r.getEstado() != EstadoReserva.NO_SHOW){
+                nochesTotales+= r.calcularNoches();
+                //Evalua si la noche coinicide con la temporada
+                if(tipo != null && empresa.tipoTemporada(r.getFechaEntrada())== tipo){
+                    nochesTemporada+= r.calcularNoches();
+                }
+            }
+        }
+        return porcentaje(nochesTemporada, nochesTotales);
+    }
+
+    public double tasaCancelacion(){
+        int totalReservas=0;
+        int totalReservasCanceladas=0;
+        for(Reserva r: empresa.getReservas()){
+            if(r != null){
+                totalReservas++;
+                if(r.getEstado()== EstadoReserva.CANCELADA){
+                    totalReservasCanceladas++;
+                }
+            }
+        }
+        return porcentaje(totalReservasCanceladas, totalReservas);
+    }
+
+    public int cancelacionesPorCanal(Canal canal){
+        int total=0;
+        for(Reserva r: empresa.getReservas()){
+            if(r != null && r.getEstado()== EstadoReserva.CANCELADA && r.getCanal()== canal){
+                total++;
+            }
+        }
+        return total;
+    }
+
+    public int cancelacionesPorAntelacion(int diasMinimos, int diasMaximos){
+        int total=0;
+        for(Reserva r: empresa.getReservas()){
+            //Valida que la reserva este cancelada y con la fecha
+            if(r != null && r.getEstado()== EstadoReserva.CANCELADA && r.getFechaCancelacion() != null){
+
+                int dias=r.requiereAnticipo();
+                if(dias>= diasMinimos && dias <= diasMaximos){
+                    total++;
+                }
+            }
+        }
+        return total;
+    }
+
+    //El titular no llega antes de las 10:00 p. m. del día de entrada
+    public double NoShow(){
+        int totalReservas=0;
+        int totalNoShow=0;
+        for(Reserva r: empresa.getReservas()){
+            if(r!= null){
+                totalReservas++;
+                if(r.getEstado()== EstadoReserva.NO_SHOW){
+                    totalNoShow++;
+                }
+            }
+        }
+        return porcentaje(totalNoShow, totalReservas);
+    }
+
+    //Metodo auxiliar
+    private double porcentaje (int parte, int total){
+        if(total==0){
+            return 0;
+        }
+        return parte*100.0/ total;
+    }
+    private int diasEntre(LocalDate desde, LocalDate hasta){
+        return (int) ChronoUnit.DAYS.between(desde, hasta);
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+}
