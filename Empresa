@@ -1,0 +1,288 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
+
+public class Empresa {
+    private String nit;
+    private String nombre;
+    private String ubicacion;
+
+    private LinkedList<String> codigosExternos;
+
+    private final LinkedList<Apartamento> apartamentos;
+    private final LinkedList<Reserva> reservas;
+    private final LinkedList<Temporada> temporadas;
+    private final LinkedList<Bloqueo> bloqueos;
+    private final LinkedList<ConflictoCanal> conflictoCanales;
+    private final LinkedList<Rol> roles;
+    private final LinkedList<Novedad> novedades;
+
+    public Empresa(String nit, String nombre, String ubicacion){
+        this.nit= nit;
+        this.nombre=nombre;
+        this.ubicacion=ubicacion;
+
+        this.codigosExternos=new LinkedList<>();
+
+        this.apartamentos= new LinkedList<>();
+        this.reservas= new LinkedList<>();
+        this.temporadas= new LinkedList<>();
+        this.bloqueos= new LinkedList<>();
+        this.conflictoCanales= new LinkedList<>();
+        this.roles= new LinkedList<>();
+        this.novedades= new LinkedList<>();
+    }
+
+    //Registros
+    public void registrarHuespued(Huesped h){
+        if(h == null){
+            return;
+        }
+        for(Rol r: roles){
+            if(r.getCedula().equals(h.getCedula())){
+                System.out.println("Ya existe una persona con esa cedula");
+                return;
+            }
+        }
+        roles.add(h);
+    }
+
+    public void registrarApartamento(Apartamento a){
+
+        apartamentos.add(a);
+    }
+
+    public void registrarTemporada(Temporada t){
+
+        temporadas.add(t);
+    }
+
+    public void registrarBloqueo(Bloqueo b){
+
+        bloqueos.add(b);
+    }
+
+    public void registrarNovedad(Novedad n){
+        if(n !=  null){
+            novedades.add(n);
+        }
+    }
+
+    //Disponibles
+    public LinkedList<Apartamento> buscarDisponibles(LocalDate entrada, LocalDate salida, int personas){
+        LinkedList<Apartamento> disponibles= new LinkedList<>();
+        for(Apartamento a: apartamentos){
+            if(a.verificarDisponibilidad() && a.getCapacidadMaxima()>= personas && !hayConflicto(a, entrada, salida)){
+                disponibles.add(a);
+            }
+        }
+        return disponibles;
+    }
+
+    //La noche de la fecha de salida no se cobra ni se ocupa: del 10 al 12 de marzo son dos noches.
+    //true si el apartamento tiene una reserva activa o si un bloqueo choca con las fechas
+    public boolean hayConflicto(Apartamento a, LocalDate entrada, LocalDate salida){
+        int nuevaEntrada= numero(entrada);
+        int nuevaSalida= numero(salida);
+        for(Reserva r: reservas){
+            if(r.getApartamento().equals(a) && r.estaActiva()){
+                if(nuevaEntrada< numero(r.getFechaSalida()) && numero(r.getFechaEntrada()) < nuevaSalida){
+                    return true;
+                }
+            }
+        }
+        for(Bloqueo b: bloqueos){
+            if(b.getApartamento().equals(a)){
+                if(numero(b.getFechaInicio())< nuevaSalida && numero(b.getFechaFin()) >= nuevaEntrada){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    //Valor estancia
+    public int cotizar(Apartamento a, LocalDate entrada, LocalDate salida, LinkedList<Ocupante> ocupantes){
+        //El alojamiento cobra por persona, por noche, y los ocupantes menores de 6 años ocupan cupo en el apartamento pero no pagan.
+        //La edad se calcula a la fecha de entrada.
+        int ocupantesQuePagan=0;
+        for(Ocupante o: ocupantes){
+            if(o.paga(entrada)){
+                ocupantesQuePagan++;
+            }
+        }
+        //El valor de la estancia es la suma, noche por noche, de la tarifa de la temporada de esa noche multiplicada por el número de ocupantes de 6 años o más.
+        int total=0;
+        LocalDate noche= entrada;
+        while(numero(noche)< numero(salida)){
+            TemporadaAlojamiento tipo= tipoTemporada(noche);
+            total+= a.getTarifa(tipo)* ocupantesQuePagan;
+            noche= noche.plusDays(1);
+        }
+        return total;
+    }
+
+    //Temporada baja (temporada base): cubre todas las fechas que no pertenezcan a otra temporada.
+    public TemporadaAlojamiento tipoTemporada(LocalDate fecha){
+        for(Temporada t: temporadas){
+            if(t.contiene(fecha)){
+                return t.getTipo();
+            }
+        }
+        return TemporadaAlojamiento.BAJA;
+    }
+
+    //Reserva
+    //Reserva portal: el huésped reserva por sí mismo desde la aplicación.
+    //Reserva directa: la recepción registra una reserva recibida por teléfono, mensajería o de manera presencial.
+    public void crearReserva(Reserva r){
+        if(r== null || !reservaValida(r)){
+            return;
+        }
+        guardarReserva(r);
+    }
+
+    public void registrarReservaExterna(ReservaExterna r){
+        if(r== null){
+            return;
+        }
+        for(String codigo:codigosExternos){
+            if(codigo.equals(r.getCodigoExterno())){
+                System.out.println("El codigo externo ya tiene creada una reserva");
+                return;
+            }
+        }
+        if(hayConflicto(r.getApartamento(), r.getFechaEntrada(), r.getFechaSalida())){
+            conflictoCanales.add(new ConflictoCanal(r.getCodigoExterno(), r.getApartamento(). getCodigo(), r.getFechaEntrada(), r.getFechaSalida(), "Choca con una reserva", LocalDateTime.now()));
+            System.out.println("Reserva externa rechazada por conflicto de canal");
+            return;
+        }
+        if(reservaValida(r)){
+            guardarReserva(r);
+            codigosExternos.add(r.getCodigoExterno());
+        }
+    }
+
+    //Validaciones de reservas nuevas
+    private boolean reservaValida(Reserva r) {
+        int entrada = numero(r.getFechaEntrada());
+        int salida = numero(r.getFechaSalida());
+
+        if (salida <= entrada) {
+            System.out.println("La salida debe ser posterior a la entrada");
+            return false;
+        }
+        if (entrada < numero(LocalDate.now())) {
+            System.out.println("La entrada no puede ser anterior a hoy");
+            return false;
+        }
+        if (r.getOcupantes().size() > r.getApartamento().getCapacidadMaxima()) {
+            System.out.println("Los ocupantes superan la capacidad del apartamento");
+            return false;
+        }
+        if (hayConflicto(r.getApartamento(), r.getFechaEntrada(), r.getFechaSalida())) {
+            System.out.println("El apartamento no está disponible en esas fechas");
+            return false;
+        }
+        return true;
+    }
+    //Valor congelado: el valor y la política de cancelación se guardan al crear la reserva; un cambio posterior de tarifas no afecta las reservas ya creadas
+    private void guardarReserva(Reserva r) {
+        int valor = cotizar(r.getApartamento(), r.getFechaEntrada(), r.getFechaSalida(), r.getOcupantes());
+        r.setValorEstancia(valor);
+        reservas.add(r);
+    }
+
+    // Una reserva Pendiente que lleva más de 24 horas sin confirmarse pasa a Cancelada
+    public void cancelarPendientesVencidas() {
+        LocalDateTime limite = LocalDateTime.now().minusHours(24);
+
+        for (Reserva r : reservas) {
+            if (r.getEstado() == EstadoReserva.PENDIENTE && r.getFechaCreacion().isBefore(limite)) {
+                r.cancelar();
+            }
+        }
+    }
+
+    public LinkedList<Reserva> historialHuesped(Huesped h){
+        LinkedList<Reserva> historial= new LinkedList<>();
+        for(Reserva r: reservas){
+            if(r.getTitular().equals(h)){
+                historial.add(r);
+            }
+        }
+        return historial;
+    }
+
+    //Auxiliar
+    private int numero(LocalDate fecha){
+        return fecha.getYear()* 10000 + fecha.getMonthValue()* 100 + fecha.getDayOfMonth();
+    }
+
+    //Getters and setters
+    public String getNit() {
+
+        return nit;
+    }
+    public void setNit(String nit) {
+
+        this.nit = nit;
+    }
+    public String getNombre() {
+
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+
+        this.nombre = nombre;
+    }
+    public String getUbicacion() {
+
+        return ubicacion;
+    }
+    public void setUbicacion(String ubicacion) {
+
+        this.ubicacion = ubicacion;
+    }
+
+    public LinkedList<String> getCodigosExternos() {
+        return new LinkedList<>(codigosExternos);
+    }
+
+    public void setCodigosExternos(LinkedList<String> codigosExternos) {
+        this.codigosExternos = codigosExternos;
+    }
+
+    public LinkedList<Apartamento> getApartamentos() {
+
+        return new LinkedList<>(apartamentos);
+    }
+    public LinkedList<Reserva> getReservas() {
+
+        return new LinkedList<>(reservas);
+    }
+
+    public LinkedList<Temporada> getTemporadas() {
+
+        return new LinkedList<>(temporadas);
+    }
+
+    public LinkedList<Bloqueo> getBloqueos() {
+
+        return new LinkedList<>(bloqueos);
+    }
+    public LinkedList<ConflictoCanal> getConflictoCanales(){
+
+        return new LinkedList<>(conflictoCanales);
+    }
+
+    public LinkedList<Rol> getRoles() {
+        return new LinkedList<>(roles);
+    }
+
+    public LinkedList<Novedad> getNovedades() {
+        return new LinkedList<>(novedades);
+    }
+}
