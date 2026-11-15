@@ -3,5 +3,5 @@ package co.edu.uniquindio.ProjectoFinal;
 public enum TemporadaAlojamiento {
     BAJA,
     MEDIA,
-    ALTA;
+    ALTA
 }
