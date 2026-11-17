@@ -1,0 +1,39 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class CargoTest {
+
+    private static final Logger LOG= Logger.getLogger(CargoTest.class.getName());
+
+    @DisplayName("Cargo con los mismos datos")
+    @Test
+    void testInicio(){
+
+        LOG.info("Iniciando prueba cargo...");
+
+        Cargo resultado= new Cargo ("Alojamiento", 50000, TipoCargo.ALOJAMIENTO);
+
+        assertEquals(new Cargo("Alojamiento", 50000, TipoCargo.ALOJAMIENTO ), resultado);
+
+        LOG.info("Finalizando prueba cargo...");
+    }
+    @DisplayName("Pago con distintos datos")
+    @Test
+    void testNotEquals(){
+
+        LOG.info("Iniciando prueba cargo...");
+
+        Cargo c= new Cargo("Alojamiento", 50000, TipoCargo.ALOJAMIENTO);
+        Cargo d= new Cargo("Lavanderia", 20000, TipoCargo.SERVICIO_ADICIONAL);
+
+        assertNotEquals(d,c);
+
+        LOG.info("Finalizando prueba distintos datos...");
+    }
+}
