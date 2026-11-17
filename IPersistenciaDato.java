@@ -1,0 +1,8 @@
+package co.edu.uniquindio.ProjectoFinal;
+
+public interface IPersistenciaDato {
+
+    void guardar(Empresa empresa);
+
+    Empresa cargar();
+}
